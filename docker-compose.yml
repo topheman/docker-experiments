@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  front:
+    build: ./front
+    command: npm start
+    ports:
+      - 3000:3000
+    volumes:
+      - ./front:/usr/front
+      - front-deps:/usr/front/node_modules
+
+volumes:
+  front-deps:
