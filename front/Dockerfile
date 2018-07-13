@@ -10,6 +10,7 @@ RUN mkdir -p front
 WORKDIR /usr/front
 
 COPY ./package.json .
+COPY ./package-lock.json .
 
 RUN npm install
 
