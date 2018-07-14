@@ -9,8 +9,8 @@
   },
   "scripts": {
     "docker-start": "docker-compose up -d",
-    "docker-build": "docker-compose exec front npm run build",
-    "docker-test": "docker-compose exec front npm test",
+    "docker-build": "docker-compose run --rm front npm run build",
+    "docker-test": "docker-compose run --rm front npm test",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
