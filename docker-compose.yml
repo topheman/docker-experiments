@@ -9,6 +9,15 @@ services:
     volumes:
       - ./front:/usr/front
       - front-deps:/usr/front/node_modules
+  api:
+    build:
+      context: ./api
+      args:
+        app_env: ${APP_ENV}
+    volumes:
+      - ./api:/go/src/github.com/topheman/my-docker-fullstack-project/api
+    ports:
+      - "5000:5000"
 
 volumes:
   front-deps:
