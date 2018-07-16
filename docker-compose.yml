@@ -1,22 +1,13 @@
 version: "3"
 
 services:
-  front:
-    build: ./front
-    ports:
-      - 3000:3000
-    volumes:
-      - ./front:/usr/front
-      - front-deps:/usr/front/node_modules
   api:
+    image: my-docker-fullstack-project_api_production
     build:
       context: ./api
       args:
-        app_env: ${APP_ENV}
+        APP_ENV: production
     volumes:
       - ./api:/go/src/github.com/topheman/my-docker-fullstack-project/api
     ports:
       - "5000:5000"
-
-volumes:
-  front-deps:

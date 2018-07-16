@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  api:
+    image: my-docker-fullstack-project_api_development
+    build:
+      args:
+        APP_ENV: development
+  front:
+    image: my-docker-fullstack-project_front_development
+    build:
+      context: ./front
+    ports:
+      - 3000:3000
+    volumes:
+      - ./front:/usr/front
+      - front-deps:/usr/front/node_modules
+
+volumes:
+  front-deps:

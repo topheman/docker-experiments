@@ -15,6 +15,7 @@ type infos struct {
 	Hostname string `json:"hostname"`
 	Version  string `json:"version"`
 	Cpus     int    `json:"cpus"`
+	AppEnv   string `json:"APP_ENV"`
 }
 
 func makeInfos() *infos {
@@ -22,7 +23,7 @@ func makeInfos() *infos {
 	if err != nil {
 		hostname = "Unknown"
 	}
-	return &infos{hostname, runtime.Version(), runtime.NumCPU()}
+	return &infos{hostname, runtime.Version(), runtime.NumCPU(), os.Getenv("APP_ENV")}
 }
 
 func rootRouteHTML(w http.ResponseWriter, _ *http.Request) {
@@ -33,7 +34,8 @@ func rootRouteHTML(w http.ResponseWriter, _ *http.Request) {
 		<li>Hostname: %s</li>
 		<li>Version: %s</li>
 		<li>Number of CPUs: %d</li>
-	</ul>`, infos.Hostname, infos.Version, infos.Cpus)
+		<li>APP_ENV: %s</li>
+	</ul>`, infos.Hostname, infos.Version, infos.Cpus, infos.AppEnv)
 }
 
 func rootRouteJSON(w http.ResponseWriter, r *http.Request) {

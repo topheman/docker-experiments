@@ -17,11 +17,23 @@ You need to have installed:
 docker-compose up -d
 ```
 
-Go to http://localhost:3000/ to access the frontend, you're good to go.
+This will create (if not already done) and launch a whole development stack, based on [`docker-compose.yml`](docker-compose.yml) and [`docker-compose.override.yml`](docker-compose.override.yml):
 
-The api is accessible at http://localhost:5000/.
+* A container for nodejs for react development
+* A container for golang in development mode (using [fresh](https://github.com/pilu/fresh) to build and restart the go webserver when you change the sources)
 
-* [/front](./front) folder holds frontend source code in react, checkout the [readme](./front#readme) for more informations
-* [/api](./api) folder holds api source code in go, checkout the [readme](./api#readme) for more informations
+Go to http://localhost:3000/ to access the frontend, you're good to go, the api is accessible at http://localhost:5000/.
+
+## Production mode
+
+```shell
+docker-compose -f ./docker-compose.yml up
+```
+
+This will create (if not already done) and launch a whole production stack only based on [`docker-compose.yml`](docker-compose.yml):
+
+* No nodejs container (it should not be shipped to production, the development container will be used to create the build artefacts with create-react-app).
+* A container for the golang server (with the app compiled)
+* An nginx container *TODO*
 
 *This is still a work in progress*
