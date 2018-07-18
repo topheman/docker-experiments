@@ -1,13 +1,10 @@
-version: "3"
+version: "3.4"
 
 services:
   api:
     image: my-docker-fullstack-project_api_production
     build:
+      target: production
       context: ./api
-      args:
-        APP_ENV: production
-    volumes:
-      - ./api:/go/src/github.com/topheman/my-docker-fullstack-project/api
     ports:
       - "5000:5000"
