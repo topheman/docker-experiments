@@ -8,17 +8,12 @@ Once you `docker-compose up -d`, the whole stack spins up and your webpack serve
 
 ## Tasks
 
-npm tasks (such as `npm test`) are run inside the container. To avoid having to write each time `docker-compose exec front npm run my-task`, I added `docker-*` tasks that you can trigger from your host machine.
+npm tasks (such as `npm test`) are run inside the container. To avoid having to write each time `docker-compose run front npm run my-task`, I added `docker-*` tasks that you can trigger from your host machine:
 
-Task examples:
-
-* `npm run docker-test`: triggers `npm test` in the container from the host
-* `npm run docker-build`: triggers `npm run build` in the container from the host
-
-Note: Explain `docker-compose exec <service> <command>`:
-
-* `<service>`: `front`, as described in `docker-compose.yml`
-* `<command>`: `npm run my-task`
+* `npm run docker-test`: runs all tests in a container
+* `npm run docker-test:unit`: runs all unit tests in a container
+* `npm run docker-test:unit:watch`: runs all unit tests in a container in watch mode
+* `npm run docker-build`: runs `npm run build` in a container (which will create the `./build` folder on the host machine)
 
 ## Miscellaneous
 
