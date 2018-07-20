@@ -5,6 +5,9 @@ import gopher from './assets/images/gopher.svg';
 import './App.css';
 import axios from 'axios';
 
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
+
 class App extends Component {
   state = {
     loading: false,
@@ -14,23 +17,34 @@ class App extends Component {
   componentDidMount() {
     this.fetchInfos()
   }
+  componentWillUnmount() {
+    source.cancel({
+      type: "componentWillUnmount",
+      message:"Component unmounting, cancelling inflight requests"
+    });
+  }
   fetchInfos() {
     this.setState({
       error: null,
       loading: true,
       data: null
     });
-    axios.get('/api').then(result => {
+    axios.get('/api', { cancelToken: source.token }).then(result => {
       this.setState({
         data: result.data,
         loading: false
       })
     })
     .catch(error => {
-      this.setState({
-        error,
-        loading: false
-      })
+      if (axios.isCancel(error) && error.message && error.message.type === "componentWillUnmount") {
+        console.error(error.message.message);
+      }
+      else {
+        this.setState({
+          error,
+          loading: false
+        });
+      }
     })
   }
   render() {
