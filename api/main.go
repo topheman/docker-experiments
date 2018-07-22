@@ -44,10 +44,16 @@ func rootRouteJSON(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(infos)
 }
 
-func main() {
+// MakeRouter Public router factory - this is unit tested
+func MakeRouter() *mux.Router {
 	router := mux.NewRouter()
 	router.HandleFunc("/", rootRouteJSON).Methods("GET").HeadersRegexp("Accept", "application/json")
 	router.HandleFunc("/", rootRouteJSON).Methods("GET").Queries("format", "json")
 	router.HandleFunc("/", rootRouteHTML).Methods("GET")
+	return router
+}
+
+func main() {
+	router := MakeRouter()
 	log.Fatal(http.ListenAndServe(":5000", router))
 }

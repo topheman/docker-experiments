@@ -40,6 +40,16 @@ This will create (if not already done) and launch a whole production stack only 
 * `my-docker-fullstack-project_api_production`: for the golang server (with the app compiled) - containing only the binary of the golang app (that way the image)
 * An nginx image *TODO*
 
+## Tests
+
+To run all tests:
+
+```shell
+docker-compose run --rm -e CI=true front npm run -s test && docker-compose run --rm api go test -run ''
+```
+
+TODO: Make shortcuts for tests from the root of the project (some shortcuts are already available in [front](front#tasks)) / parallelize tests ?
+
 ## Notes
 
 ### Docker Multi-stage builds
