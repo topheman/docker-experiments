@@ -12,7 +12,7 @@ You need to have installed:
 * docker / docker-compose
 * npm / node (optional)
 
-## Dev mode
+## Development
 
 ### Install / launch
 
@@ -28,7 +28,7 @@ This will create (if not already done) and launch a whole development stack, bas
 
 Go to http://localhost:3000/ to access the frontend, you're good to go, the api is accessible at http://localhost:5000/.
 
-## Production mode
+## Production
 
 ```shell
 docker-compose -f ./docker-compose.yml up
@@ -49,6 +49,10 @@ docker-compose run --rm -e CI=true front npm run -s test && docker-compose run -
 ```
 
 TODO: Make shortcuts for tests from the root of the project (some shortcuts are already available in [front](front#tasks)) / parallelize tests ?
+
+## Deploy
+
+TODO
 
 ## Notes
 
@@ -87,10 +91,11 @@ Don't want to use `docker-compose` (everything bellow is already specified in th
   * creates (if not exists) and bind the volumes
   * the container will be removed once you kill the process (`--rm`)
 
-## What's next ?
+## What's next?
 
 The next thing that will be comming are:
 
+* setup CI
 * using [nginx](https://www.nginx.com/) as a reverse-proxy to:
   * serve the golang api which is in its own container on `/api`
   * make a build of the front and serve it at the root
