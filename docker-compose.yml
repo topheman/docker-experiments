@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   api:
-    image: my-docker-fullstack-project_api_production
+    image: topheman/my-docker-fullstack-project_api_production
     build:
       target: production
       context: ./api

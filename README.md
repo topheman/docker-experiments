@@ -22,8 +22,8 @@ docker-compose up -d
 
 This will create (if not already done) and launch a whole development stack, based on [docker-compose.yml](docker-compose.yml), [docker-compose.override.yml](docker-compose.override.yml), [api/Dockerfile](api/Dockerfile) and [front/Dockerfile](front/Dockerfile) - following images:
 
-* `my-docker-fullstack-project_front_development`: for react development (based on nodejs image)
-* `my-docker-fullstack-project_api_development`: for golang in development mode (using [fresh](https://github.com/pilu/fresh) to build and restart the go webserver when you change the sources)
+* `topheman/my-docker-fullstack-project_front_development`: for react development (based on nodejs image)
+* `topheman/my-docker-fullstack-project_api_development`: for golang in development mode (using [fresh](https://github.com/pilu/fresh) to build and restart the go webserver when you change the sources)
   * The `services.api.command` entry in [docker-compose.override.yml](docker-compose.override.yml) will override the default `RUN` command and start a dev server (instead of running the binary compiled in the container at build time)
 
 Go to http://localhost:3000/ to access the frontend, you're good to go, the api is accessible at http://localhost:5000/.
@@ -37,7 +37,7 @@ docker-compose -f ./docker-compose.yml up
 This will create (if not already done) and launch a whole production stack only based on [`docker-compose.yml`](docker-compose.yml) and [api/Dockerfile](api/Dockerfile) - following images:
 
 * No nodejs image (it should not be shipped to production, the development image will be used to launch a container that will create the build artefacts with create-react-app).
-* `my-docker-fullstack-project_api_production`: for the golang server (with the app compiled) - containing only the binary of the golang app (that way the image)
+* `topheman/my-docker-fullstack-project_api_production`: for the golang server (with the app compiled) - containing only the binary of the golang app (that way the image)
 * An nginx image *TODO*
 
 ## Tests
@@ -68,10 +68,9 @@ You can tell the difference of weight:
 
 ```
 docker images
-REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
-my-docker-fullstack-project_api_production      latest              6021ac7d9d2f        43 minutes ago      11.5MB
-my-docker-fullstack-project_api_development     latest              755a7ed2bf72        44 minutes ago      426MB
-my-docker-fullstack-project_front_development   latest              2a71910b5e8c        About an hour ago   225MB
+topheman/my-docker-fullstack-project_api_production      latest              01f1b575fae6        About a minute ago   11.5MB
+topheman/my-docker-fullstack-project_api_development     latest              fff1ef3ec29e        8 minutes ago        426MB
+topheman/my-docker-fullstack-project_front_development   latest              4ed3aea602ef        22 hours ago         225MB
 ```
 
 ### Commands
@@ -82,11 +81,11 @@ my-docker-fullstack-project_front_development   latest              2a71910b5e8c
 
 Don't want to use `docker-compose` (everything bellow is already specified in the `docker*.yml` files - only dropping to remember the syntax for the futur) ?
 
-* `docker build ./api -t my-docker-fullstack-project_api_production`: build the `api` and tag it as `my-docker-fullstack-project_api_production` based on [api/Dockerfile](api/Dockerfile)
-* `docker run -d -p 5000:5000 my-docker-fullstack-project_api_production`: runs the `my-docker-fullstack-project_api_production` image previously created in daemon mode and exposes the ports
-* `docker build ./front -t my-docker-fullstack-project_front_development`: build the `front` and tag it as `my-docker-fullstack-project_front_development` based on [front/Dockerfile](front/Dockerfile)
-* `docker run --rm -p 3000:3000 -v $(pwd)/front:/usr/front -v front-deps:/usr/front/node_modules my-docker-fullstack-project_front_development`:
-  * runs the `my-docker-fullstack-project_front_development` image previously created in attach mode
+* `docker build ./api -t topheman/my-docker-fullstack-project_api_production`: build the `api` and tag it as `topheman/my-docker-fullstack-project_api_production` based on [api/Dockerfile](api/Dockerfile)
+* `docker run -d -p 5000:5000 topheman/my-docker-fullstack-project_api_production`: runs the `topheman/my-docker-fullstack-project_api_production` image previously created in daemon mode and exposes the ports
+* `docker build ./front -t topheman/my-docker-fullstack-project_front_development`: build the `front` and tag it as `topheman/my-docker-fullstack-project_front_development` based on [front/Dockerfile](front/Dockerfile)
+* `docker run --rm -p 3000:3000 -v $(pwd)/front:/usr/front -v front-deps:/usr/front/node_modules topheman/my-docker-fullstack-project_front_development`:
+  * runs the `topheman/my-docker-fullstack-project_front_development` image previously created in attach mode
   * exposes the port 3000
   * creates (if not exists) and bind the volumes
   * the container will be removed once you kill the process (`--rm`)
