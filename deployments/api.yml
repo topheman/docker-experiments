@@ -21,13 +21,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-docker-fullstack-project-api-service
+  # named like the docker-compose service "api"
+  # so that nginx config stays same between docker-compose and kubernetes
+  name: api
 spec:
   selector:
     app: my-docker-fullstack-project
     tier: api
   ports:
     - protocol: TCP
-      port: 80
+      port: 5000
       targetPort: golang
-  type: LoadBalancer
+  # default type (only exposed to the pods - not to the outside, like LoadBalancer)
+  type: ClusterIP

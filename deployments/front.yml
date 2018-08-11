@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: my-docker-fullstack-project-front-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: my-docker-fullstack-project
+        tier: front
+    spec:
+      containers:
+        - image: topheman/my-docker-fullstack-project_nginx:0.1.0
+          name: nginx
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/usr/sbin/nginx","-s","quit"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-docker-fullstack-project-front-service
+spec:
+  selector:
+    app: my-docker-fullstack-project
+    tier: front
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
