@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: my-docker-fullstack-project-api-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: my-docker-fullstack-project
+        tier: api
+        track: stable
+    spec:
+      containers:
+        - name: my-docker-fullstack-project-api-container
+          image: topheman/my-docker-fullstack-project_api_production:0.1.0
+          ports:
+            - name: golang # Can be referred in services
+              containerPort: 5000 # Not hostPort (we only expose the container inside the pod)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-docker-fullstack-project-api-service
+spec:
+  selector:
+    app: my-docker-fullstack-project
+    tier: api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: golang
+  type: LoadBalancer
