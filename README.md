@@ -30,15 +30,23 @@ Go to http://localhost:3000/ to access the frontend, you're good to go, the api 
 
 ## Production
 
+This section is about **testing the production images with docker-compose** (more to come in deployment section).
+
+Make sure you have built the frontend with `docker-compose run --rm front npm run build`, then:
+
 ```shell
-docker-compose -f ./docker-compose.yml up
+docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml up --build
 ```
 
-This will create (if not already done) and launch a whole production stack only based on [`docker-compose.yml`](docker-compose.yml) and [api/Dockerfile](api/Dockerfile) - following images:
+This will create (if not already done) and launch a whole production stack:
 
-* No nodejs image (it should not be shipped to production, the development image will be used to launch a container that will create the build artefacts with create-react-app).
+* No nodejs image (it should not be shipped to production, the development image is only used to launch athe container that creates the build artefacts with create-react-app).
 * `topheman/my-docker-fullstack-project_api_production`: for the golang server (with the app compiled) - containing only the binary of the golang app (that way the image)
-* An nginx image *TODO*
+* `topheman/my-docker-fullstack-project_nginx`: which will:
+  * serve the frontend (copied from `/front/build`)
+  * proxy `/api` requests to `http://api:5000` (the docker subnet exposed by the golang api container)
+
+Access [http://localhost](http://localhost) and you're good to go.
 
 ## Tests
 

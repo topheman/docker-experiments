@@ -8,6 +8,9 @@ services:
       target: builder
     volumes:
       - ./api:/go/src/github.com/topheman/my-docker-fullstack-project/api
+    ports:
+      # only expose in development (in production, the api server will be proxied via nginx)
+      - "5000:5000"
   front:
     image: topheman/my-docker-fullstack-project_front_development
     build:

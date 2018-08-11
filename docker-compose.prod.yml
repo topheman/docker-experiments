@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+  nginx:
+    image: "topheman/my-docker-fullstack-project_nginx"
+    build:
+      context: .
+      dockerfile: ./Dockerfile.prod
+    ports:
+      - "80:80"
+    # Already copied in Dockerfile - we map them to simplify debugging
+    volumes:
+      - ./front/build:/usr/share/nginx/html
+      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
