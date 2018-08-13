@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import reactLogo from './assets/images/react-logo.svg';
 import dockerLogo from './assets/images/docker-logo.svg';
+import nginxLogo from './assets/images/nginx-logo.svg';
+import kubernetesLogo from './assets/images/kubernetes-logo.svg';
 import gopher from './assets/images/gopher.svg';
 import './App.css';
 import axios from 'axios';
@@ -52,10 +54,13 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={dockerLogo} className="App-logo" alt="logo" />
-          <img src={reactLogo} className="App-logo" alt="logo" />
-          <img src={gopher} style={{marginLeft: 12}} className="App-logo" alt="logo" />
+          <img src={kubernetesLogo} style={{marginRight: 20}} className="App-logo" alt="kubernetes logo" />
+          <img src={dockerLogo} className="App-logo" alt="docker logo" />
+          <img src={reactLogo} className="App-logo" alt="react logo" />
+          <img src={nginxLogo} style={{marginRight: 20}} className="App-logo" alt="nginx logo" />
+          <img src={gopher} style={{marginLeft: 12}} className="App-logo" alt="golang logo" />
           <h1 className="App-title">my-docker-fullstack-project</h1>
+          <p className="App-github-link"><a href="https://github.com/topheman/my-docker-fullstack-project" title="Sources on github">sources on github</a></p>
         </header>
         <p>Basic infos retrieved from the dockerized golang api:</p>
         {loading && <p>Loading ...</p>}

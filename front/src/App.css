@@ -7,11 +7,25 @@
   height: 80px;
 }
 
+.App-logo:hover {
+  animation: App-logo-spin infinite 1.5s ease-in-out;
+}
+
 .App-header {
   background-color: #222;
   height: 150px;
   padding: 20px;
   color: white;
+}
+
+.App-github-link a {
+  color: white;
+}
+
+@media screen and (max-width: 500px) {
+  .App-logo {
+    height: 43px;
+  }
 }
 
 .App-title {

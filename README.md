@@ -1,5 +1,7 @@
 # my-docker-fullstack-project
 
+<p align="center"><img src="./logo.png" width=530 /></p>
+
 This started as a simple use case to discover `docker`, `docker-compose` 🐳 and the creation of `Dockerfile` in both development and production:
 
 * A [front](front) made with create-react-app, running in a nodejs container for development (only the built artefacts will be used in production, not this container)
