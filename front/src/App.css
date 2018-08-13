@@ -36,6 +36,21 @@
   font-size: large;
 }
 
+.App-button {
+  cursor: pointer;
+  color: white;
+  background: black;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.App-button:hover {
+  color: black;
+  background: white;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

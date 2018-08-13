@@ -45,7 +45,7 @@ docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml up --build
 
 This will create (if not already done) and launch a whole production stack:
 
-* No nodejs image (it should not be shipped to production, the development image is only used to launch athe container that creates the build artefacts with create-react-app).
+* No nodejs image (it should not be shipped to production, the development image is only used to launch the container that creates the build artefacts with create-react-app).
 * `topheman/my-docker-fullstack-project_api_production`: for the golang server (with the app compiled) - containing only the binary of the golang app (that way the image)
 * `topheman/my-docker-fullstack-project_nginx`: which will:
   * serve the frontend (copied from `/front/build`)

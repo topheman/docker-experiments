@@ -49,6 +49,9 @@ class App extends Component {
       }
     })
   }
+  exit() {
+    axios.get('/api/exit');
+  }
   render() {
     const {loading, error, data} = this.state;
     return (
@@ -66,9 +69,14 @@ class App extends Component {
         {loading && <p>Loading ...</p>}
         {error && <p>An error occured</p>}
         {data && <ul style={{listStyle: "none", paddingLeft: 0}}>{Object.entries(data).map(([key, value]) => <li key={key}>
-          <strong>{key}</strong>: <span>{value}</span>
+          <strong>{key}</strong>: <span>{key !== 'uptime' ? value : `${parseInt(value, 10)}s`}</span>
         </li>)}</ul>}
-        <p><button onClick={() => this.fetchInfos()}>Reload</button></p>
+        <p>
+          <button onClick={() => this.fetchInfos()} className="App-button">Reload infos</button>       
+        </p>
+        {process.env.NODE_ENV === 'production' && <p>
+          <a onClick={() => this.exit()} className="App-button"><code>exit 1</code> the api server</a> and see the container restart the api server on failure, thanks to docker-compose or kubernetes (reload infos to check uptime).
+        </p>}
       </div>
     );
   }

@@ -8,3 +8,5 @@ services:
     build:
       target: production
       context: ./api
+    # the container will restart the api if it exits with code > 0 (won't work in dev cause of fresh)
+    restart: on-failure
