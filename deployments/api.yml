@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: my-docker-fullstack-project-api-deployment
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:

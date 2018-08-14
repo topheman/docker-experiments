@@ -33,6 +33,16 @@ This will create (if not already done) and launch a whole development stack, bas
 
 Go to http://localhost:3000/ to access the frontend, you're good to go, the api is accessible at http://localhost:5000/.
 
+## Tests
+
+To run all tests:
+
+```shell
+docker-compose run --rm -e CI=true front npm run -s test && docker-compose run --rm api go test -run ''
+```
+
+⚠️ TODO: Make shortcuts for tests from the root of the project (some shortcuts are already available in [front](front#tasks)) / parallelize tests ? Maybe a Makefile ?
+
 ## Production - docker-compose
 
 This section is about **testing the production images with docker-compose** 🐳 (check the [deployment section](#deployment---kubernetes) to deploy with kubernetes locally).
@@ -52,16 +62,6 @@ This will create (if not already done) and launch a whole production stack:
   * proxy `/api` requests to `http://api:5000` (the docker subnet exposed by the golang api container)
 
 Access [http://localhost](http://localhost) and you're good to go.
-
-## Tests
-
-To run all tests:
-
-```shell
-docker-compose run --rm -e CI=true front npm run -s test && docker-compose run --rm api go test -run ''
-```
-
-⚠️ TODO: Make shortcuts for tests from the root of the project (some shortcuts are already available in [front](front#tasks)) / parallelize tests ? Maybe a Makefile ?
 
 ## Deployment - kubernetes
 
@@ -143,6 +143,16 @@ To make it work:
 
 That way, the nginx conf can work with both docker-compose AND kubernetes, proxying `http://api` - [see nginx/site.conf](nginx/site.conf).
 
+### Restart on failure
+
+If your app exits with a failure code (greater than 0) inside the container, you'll want it to restart (like you would do with pm2 and node apps).
+
+With [docker-compose/production](#production---docker-compose), the, directive `restart: on-failure` in the [docker-compose.yml](docker-compose.yml) file will ensure that. You'll be able to check it by clicking on the "exit 1 the api server" button, which will exit the golang api. You'll see that the uptime is back counting from 0 seconds.
+
+With [kubernetes/deployment](#deployment---kubernetes), I setup 2 replicas of the api server, so when you retrieve the infos, the hostname might change according of the api pod you're balance on.
+
+Exiting one pod won't break the app, it will fallback on the remaining replica. If you exit the two pods, you'll get an error retrieving infos, until one of the pod is back up by kubernetes (check their status with `kubectl get pods`).
+
 ### Commands
 
 #### Docker commands
@@ -168,6 +178,7 @@ Don't want to use `docker-compose` (everything bellow is already specified in th
 
 * `kubectl create -f ./deployments/api.yml -f ./deployments/front.yml`: creates the resources specified in the declaration files
 * `kubectl delete -f ./deployments/api.yml -f ./deployments/front.yml`: deletes resources specified in the declaration files
+* `kubectl scale --replicas=3 deployment/my-docker-fullstack-project-api-deployment`: scales up the api through 3 pods
 
 ## What's next?
 
