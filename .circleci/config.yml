@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "Infos"
+          command: |
+            docker-compose --version
+            docker version
+      - run:
+          name: "Build development images"
+          command: docker-compose build
+      - run:
+          name: "Test front"
+          command: docker-compose run --rm -e CI=true front npm run -s test
+      - run:
+          name: "Test api"
+          command: docker-compose run --rm api go test -run ''
