@@ -2,12 +2,44 @@
 
 <p align="center"><img src="./logo.png" width=530 /></p>
 
-This started as a simple use case to discover `docker`, `docker-compose` 🐳 and the creation of `Dockerfile` in both development and production:
+This started as a simple use case to discover `docker` and `docker-compose` 🐳 :
 
-* A [front](front) made with create-react-app, running in a nodejs container for development (only the built artefacts will be used in production, not this container)
-* A very simple [api](api) made in go (the challenge is also not to have everything in JavaScript), containerized in docker with a development and a production image
+* A [front](front) made with create-react-app, running in a nodejs container for development
+* A very simple [api](api) made in go (the challenge is also not to have everything in JavaScript)
 
-I also setup **deployments on a local kubernetes** ☸️ - it can be fun to start to play with if you want to discover kubernetes.
+I also setup **deployments on a local kubernetes** ☸️ .
+
+## TL;DR
+
+You are a true developer? You don't RTFM? After all, this is why we have docker ... not to bother with all the boring setup/install steps ... 😉
+
+```shell
+git clone https://github.com/topheman/my-docker-fullstack-project.git
+cd my-docker-fullstack-project
+docker-compose up -d
+```
+
+You are good to go with a development server running at [http://localhost:3000](http://localhost:3000), with the front in react, the api in go and everything hot reloading. 👏
+
+Try to take a few minutes to read the doc bellow ... 😇
+
+## Summary
+
+* [Prerequisites](#prerequisites)
+* [Setup](#setup)
+* [Development 🛠](#development)
+* [Tests 🌡](#tests)
+* [Production - docker-compose 🐳](#production---docker-compose)
+* [Deployment - kubernetes ☸️](#deployment---kubernetes)
+* [Notes 📋](#notes)
+  * [Docker Multi-stage builds](#docker-multi-stage-builds)
+  * [Docker networks / Kubernetes services](#docker-networks--kubernetes-services)
+  * [Restart on failure](#restart-on-failure)
+  * [Commands](#commands)
+    * [Docker commands](#docker-commands)
+    * [Kubernetes commands](#kubernetes-commands)
+* [What's next?](#whats-next)
+* [Resources](#resources)
 
 ## Prerequisites
 
@@ -17,9 +49,19 @@ You need to have installed:
 * npm / node (optional)
 * local kubernetes server and client (only if you want to play with kubernetes deployment - more about that on the [deployment section](#deployment---kubernetes))
 
+## Setup
+
+```shell
+git clone https://github.com/topheman/my-docker-fullstack-project.git
+```
+
+A [Makefile](Makefile) is available that automates all the commands that are described bellow. For each section, you'll find the related commands next to the 🖊 emoji.
+
+Just run `make help` to see the whole list.
+
 ## Development
 
-### Install / launch
+### Launch development
 
 ```shell
 docker-compose up -d
@@ -33,15 +75,17 @@ This will create (if not already done) and launch a whole development stack, bas
 
 Go to http://localhost:3000/ to access the frontend, you're good to go, the api is accessible at http://localhost:5000/.
 
+🖊 `make dev-start`, `make dev-start-d`, `make dev-stop`, `make dev-ps`, `make dev-logs`, `make dev-logs-front`, `make dev-logs-api`
+
 ## Tests
 
-To run all tests:
+### Launch tests
 
 ```shell
 docker-compose run --rm -e CI=true front npm run -s test && docker-compose run --rm api go test -run ''
 ```
 
-⚠️ TODO: Make shortcuts for tests from the root of the project (some shortcuts are already available in [front](front#tasks)) / parallelize tests ? Maybe a Makefile ?
+🖊 `make test`, `make test-front`, `make test-api`
 
 ## Production - docker-compose
 
@@ -53,6 +97,8 @@ Make sure you have built the frontend with `docker-compose run --rm front npm ru
 docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml up --build
 ```
 
+Note: make sure to use the `--build` flag so that it will rebuild the images if anything changed (in the source code or whatever), thanks to [docker images layers](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/), only changes will be rebuilt, based on cache (not the whole image).
+
 This will create (if not already done) and launch a whole production stack:
 
 * No nodejs image (it should not be shipped to production, the development image is only used to launch the container that creates the build artefacts with create-react-app).
@@ -62,6 +108,8 @@ This will create (if not already done) and launch a whole production stack:
   * proxy `/api` requests to `http://api:5000` (the docker subnet exposed by the golang api container)
 
 Access [http://localhost](http://localhost) and you're good to go.
+
+🖊 `make prod-start`, `make prod-start-d`, `make prod-stop`, `make prod-ps`, `make prod-logs`, `make prod-logs-front`, `make prod-logs-api`
 
 ## Deployment - kubernetes
 
@@ -74,7 +122,7 @@ Local kubernetes server and client:
 
 The files descripting the deployments are stored in the [deployments](deployments) folder. You will find two files, each containing the deployment and the service.
 
-### Deploy
+### Deploy with kubernetes
 
 1) If you haven't built the frontend, run `docker-compose run --rm front npm run build`
 
@@ -110,6 +158,8 @@ kubectl get pods,services
 ```
 
 [More commands](#kubernetes-commands)
+
+🖊 `make kube-start`, `make kube-start-no-rebuild`, `make kube-stop`, `make kube-ps`
 
 ## Notes
 
@@ -171,6 +221,7 @@ Don't want to use `docker-compose` (everything bellow is already specified in th
   * exposes the port 3000
   * creates (if not exists) and bind the volumes
   * the container will be removed once you kill the process (`--rm`)
+* `docker rmi $(docker images -q --filter="dangling=true")`: remove dangling images (layers that have no more relationships to any tagged image. Tagged as <none>, they no longer serve a purpose and consume disk space)
 
 #### Kubernetes commands
 
@@ -231,3 +282,4 @@ More bookmarks from my research:
     * [Kubernetes NodePort vs LoadBalancer vs Ingress? When should I use what?](https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0)
   * [Kubectl apply vs kubectl create?](https://stackoverflow.com/questions/47369351/kubectl-apply-vs-kubectl-create)
   * [awesome-kubernetes - A curated list for awesome kubernetes sources](https://ramitsurana.github.io/awesome-kubernetes/)
+* [Tutoriel Linux : Makefile](https://youtu.be/2VV9FAQWHdw)
