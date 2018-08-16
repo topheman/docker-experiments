@@ -1,5 +1,7 @@
 # docker-experiments
 
+[![CircleCI](https://circleci.com/gh/topheman/docker-experiments/tree/master.svg?style=svg)](https://circleci.com/gh/topheman/docker-experiments)
+
 <p align="center"><img src="./logo.png" width=530 /></p>
 
 This started as a simple use case to discover `docker` and `docker-compose` 🐳 :
@@ -7,7 +9,7 @@ This started as a simple use case to discover `docker` and `docker-compose` 🐳
 * A [front](front) made with create-react-app, running in a nodejs container for development
 * A very simple [api](api) made in go (the challenge is also not to have everything in JavaScript)
 
-I also setup **deployments on a local kubernetes** ☸️ .
+I also setup **deployments on a local kubernetes** ☸️ and tests are running on [CircleCI](https://circleci.com/gh/topheman/docker-experiments) on each push.
 
 ## TL;DR
 
@@ -276,7 +278,7 @@ To build/push docker images, you have two solutions on CircleCI:
 
 The next thing that will be comming are:
 
-* [ ] setup CI
+* [x] setup CI
 * [x] using [nginx](https://www.nginx.com/) as a reverse-proxy to:
   * [x] serve the golang api which is in its own container on `/api`
   * [x] make a build of the front and serve it at the root
