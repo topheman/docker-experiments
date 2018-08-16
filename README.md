@@ -38,6 +38,10 @@ Try to take a few minutes to read the doc bellow ... 😇
   * [Commands](#commands)
     * [Docker commands](#docker-commands)
     * [Kubernetes commands](#kubernetes-commands)
+* [FAQ](#faq)
+  * [CircleCI](#circleci)
+    * [How to use latest version of docker-compose / docker-engine](#how-to-use-latest-version-of-docker-compose--docker-engine)
+    * [Docker vs Machine executors](#docker-vs-machine-executors)
 * [What's next?](#whats-next)
 * [Resources](#resources)
 
@@ -230,6 +234,43 @@ Don't want to use `docker-compose` (everything bellow is already specified in th
 * `kubectl create -f ./deployments/api.yml -f ./deployments/front.yml`: creates the resources specified in the declaration files
 * `kubectl delete -f ./deployments/api.yml -f ./deployments/front.yml`: deletes resources specified in the declaration files
 * `kubectl scale --replicas=3 deployment/docker-experiments-api-deployment`: scales up the api through 3 pods
+
+## FAQ
+
+### CircleCI
+
+#### How to use latest version of docker-compose / docker-engine
+
+I had the following error on my [first build](https://circleci.com/gh/topheman/docker-experiments/2):
+
+> ERROR: Version in "./docker-compose.yml" is unsupported. You might be seeing this error because you're using the wrong Compose file version. Either specify a supported version ("2.0", "2.1", "3.0", "3.1", "3.2") and place your service definitions under the `services` key, or omit the `version` key and place your service definitions at the root of the file to use version 1.
+For more on the Compose file format versions, see https://docs.docker.com/compose/compose-file/
+
+The reason was because I'm using **docker-compose file format v3.4**, which doesn't seem to be supported by the version of docker-engine used on the default config of CircleCI - [see compatibility matrix](https://docs.docker.com/compose/compose-file/#compose-and-docker-compatibility-matrix).
+
+With CircleCI, in **machine executor mode**, you can change/customize the image which your VM will be using (by default: `circleci/classic:latest`) - see the [list of images](https://circleci.com/docs/2.0/configuration-reference/#machine). I simply changed the image to use:
+
+```diff
+version: 2
+jobs:
+  build:
+-    machine: true
++    machine:
++      image: circleci/classic:201808-01
+```
+
+Checkout [.circleci/config.yml](.circleci/config.yml)
+
+Note: Why use docker-compose file format v3.4 ? To take advantage of the `target` attribute.
+
+#### Docker vs Machine executors
+
+> You can not build Docker within Docker.
+
+To build/push docker images, you have two solutions on CircleCI:
+
+* Use the [machine executor mode](https://circleci.com/docs/2.0/executor-types/#using-machine): your jobs will be run in a dedicated, ephemeral Virtual Machine (VM) - so, you can directly run docker inside
+* Use the [setup_remote_docker](https://circleci.com/docs/2.0/building-docker-images/#overview) key: a remote environment will be created, and your current primary container will be configured to use it. Then, any docker-related commands you use will be safely executed in this new environment
 
 ## What's next?
 
