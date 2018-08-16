@@ -1,19 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: my-docker-fullstack-project-api-deployment
+  name: docker-experiments-api-deployment
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        app: my-docker-fullstack-project
+        app: docker-experiments
         tier: api
         track: stable
     spec:
       containers:
-        - name: my-docker-fullstack-project-api-container
-          image: topheman/my-docker-fullstack-project_api_production:0.1.0
+        - name: docker-experiments-api-container
+          image: topheman/docker-experiments_api_production:0.1.0
           ports:
             - name: golang # Can be referred in services
               containerPort: 5000 # Not hostPort (we only expose the container inside the pod)
@@ -26,7 +26,7 @@ metadata:
   name: api
 spec:
   selector:
-    app: my-docker-fullstack-project
+    app: docker-experiments
     tier: api
   ports:
     - protocol: TCP

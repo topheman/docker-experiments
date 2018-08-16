@@ -1,16 +1,16 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: my-docker-fullstack-project-front-deployment
+  name: docker-experiments-front-deployment
 spec:
   template:
     metadata:
       labels:
-        app: my-docker-fullstack-project
+        app: docker-experiments
         tier: front
     spec:
       containers:
-        - image: topheman/my-docker-fullstack-project_nginx:0.1.0
+        - image: topheman/docker-experiments_nginx:0.1.0
           name: nginx
           lifecycle:
             preStop:
@@ -20,10 +20,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-docker-fullstack-project-front-service
+  name: docker-experiments-front-service
 spec:
   selector:
-    app: my-docker-fullstack-project
+    app: docker-experiments
     tier: front
   ports:
     - protocol: TCP

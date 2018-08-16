@@ -2,15 +2,15 @@ FROM golang:alpine as builder
 
 # Volumes and commands may be overriden in docker-compose*.yml files.
 # To build the image in production mode without docker-compose, run:
-# `docker build ./api -t topheman/my-docker-fullstack-project_api_production`
-# `docker run -d -p 5000:5000 topheman/my-docker-fullstack-project_api_production`
+# `docker build ./api -t topheman/docker-experiments_api_production`
+# `docker run -d -p 5000:5000 topheman/docker-experiments_api_production`
 ENV APP_ENV "development"
 
 # alpine comes without git. We need it for go get
 RUN apk update && apk upgrade && apk add --no-cache git
 
-COPY . /go/src/github.com/topheman/my-docker-fullstack-project/api
-WORKDIR /go/src/github.com/topheman/my-docker-fullstack-project/api
+COPY . /go/src/github.com/topheman/docker-experiments/api
+WORKDIR /go/src/github.com/topheman/docker-experiments/api
 
 RUN go get -v ./
 RUN go build

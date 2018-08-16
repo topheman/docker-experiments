@@ -2,17 +2,17 @@ version: "3.4"
 
 services:
   api:
-    image: topheman/my-docker-fullstack-project_api_development
+    image: topheman/docker-experiments_api_development
     command: sh -c "echo \"development\" && go get github.com/pilu/fresh && fresh"
     build:
       target: builder
     volumes:
-      - ./api:/go/src/github.com/topheman/my-docker-fullstack-project/api
+      - ./api:/go/src/github.com/topheman/docker-experiments/api
     ports:
       # only expose in development (in production, the api server will be proxied via nginx)
       - "5000:5000"
   front:
-    image: topheman/my-docker-fullstack-project_front_development
+    image: topheman/docker-experiments_front_development
     build:
       context: ./front
     ports:

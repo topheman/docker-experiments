@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 USERNAME="topheman"
-DOCKER_IMAGE_PREFIX="$USERNAME/my-docker-fullstack-project_"
+DOCKER_IMAGE_PREFIX="$USERNAME/docker-experiments_"
 DOCKER_IMAGE_NAME_API_PRODUCTION=$DOCKER_IMAGE_PREFIX"api_production"
 DOCKER_IMAGE_NAME_FRONT_DEVELOPMENT=$DOCKER_IMAGE_PREFIX"front_development"
 

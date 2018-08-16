@@ -1,4 +1,4 @@
-# my-docker-fullstack-project
+# docker-experiments
 
 <p align="center"><img src="./logo.png" width=530 /></p>
 
@@ -14,8 +14,8 @@ I also setup **deployments on a local kubernetes** ☸️ .
 You are a true developer? You don't RTFM? After all, this is why we have docker ... not to bother with all the boring setup/install steps ... 😉
 
 ```shell
-git clone https://github.com/topheman/my-docker-fullstack-project.git
-cd my-docker-fullstack-project
+git clone https://github.com/topheman/docker-experiments.git
+cd docker-experiments
 docker-compose up -d
 ```
 
@@ -52,7 +52,7 @@ You need to have installed:
 ## Setup
 
 ```shell
-git clone https://github.com/topheman/my-docker-fullstack-project.git
+git clone https://github.com/topheman/docker-experiments.git
 ```
 
 A [Makefile](Makefile) is available that automates all the commands that are described bellow. For each section, you'll find the related commands next to the 🖊 emoji.
@@ -69,8 +69,8 @@ docker-compose up -d
 
 This will create (if not already done) and launch a whole development stack, based on [docker-compose.yml](docker-compose.yml), [docker-compose.override.yml](docker-compose.override.yml), [api/Dockerfile](api/Dockerfile) and [front/Dockerfile](front/Dockerfile) - following images:
 
-* `topheman/my-docker-fullstack-project_front_development`: for react development (based on nodejs image)
-* `topheman/my-docker-fullstack-project_api_development`: for golang in development mode (using [fresh](https://github.com/pilu/fresh) to build and restart the go webserver when you change the sources)
+* `topheman/docker-experiments_front_development`: for react development (based on nodejs image)
+* `topheman/docker-experiments_api_development`: for golang in development mode (using [fresh](https://github.com/pilu/fresh) to build and restart the go webserver when you change the sources)
   * The `services.api.command` entry in [docker-compose.override.yml](docker-compose.override.yml) will override the default `RUN` command and start a dev server (instead of running the binary compiled in the container at build time)
 
 Go to http://localhost:3000/ to access the frontend, you're good to go, the api is accessible at http://localhost:5000/.
@@ -102,8 +102,8 @@ Note: make sure to use the `--build` flag so that it will rebuild the images if 
 This will create (if not already done) and launch a whole production stack:
 
 * No nodejs image (it should not be shipped to production, the development image is only used to launch the container that creates the build artefacts with create-react-app).
-* `topheman/my-docker-fullstack-project_api_production`: for the golang server (with the app compiled) - containing only the binary of the golang app (that way the image)
-* `topheman/my-docker-fullstack-project_nginx`: which will:
+* `topheman/docker-experiments_api_production`: for the golang server (with the app compiled) - containing only the binary of the golang app (that way the image)
+* `topheman/docker-experiments_nginx`: which will:
   * serve the frontend (copied from `/front/build`)
   * proxy `/api` requests to `http://api:5000` (the docker subnet exposed by the golang api container)
 
@@ -129,8 +129,8 @@ The files descripting the deployments are stored in the [deployments](deployment
 2) Build the production images:
 
 ```shell
-docker build ./api -t topheman/my-docker-fullstack-project_api_production:0.1.0
-docker build . -f Dockerfile.prod -t topheman/my-docker-fullstack-project_nginx:0.1.0
+docker build ./api -t topheman/docker-experiments_api_production:0.1.0
+docker build . -f Dockerfile.prod -t topheman/docker-experiments_nginx:0.1.0
 ```
 
 Note: They are tagged `0.1.0`, same version number as in the deployments files (want to put an other version number ? Don't forget to update the deployment files). For the moment, I'm not using [Helm](http://helm.readthedocs.io/en/latest/generate-and-template/) that let's you do string interpolation on yml files.
@@ -175,9 +175,9 @@ You can tell the difference of weight:
 
 ```
 docker images
-topheman/my-docker-fullstack-project_api_production      latest  01f1b575fae6  About a minute ago  11.5MB
-topheman/my-docker-fullstack-project_api_development     latest  fff1ef3ec29e  8 minutes ago       426MB
-topheman/my-docker-fullstack-project_front_development   latest  4ed3aea602ef  22 hours ago        225MB
+topheman/docker-experiments_api_production      latest  01f1b575fae6  About a minute ago  11.5MB
+topheman/docker-experiments_api_development     latest  fff1ef3ec29e  8 minutes ago       426MB
+topheman/docker-experiments_front_development   latest  4ed3aea602ef  22 hours ago        225MB
 ```
 
 ### Docker networks / Kubernetes services
@@ -213,11 +213,11 @@ Exiting one pod won't break the app, it will fallback on the remaining replica. 
 
 Don't want to use `docker-compose` (everything bellow is already specified in the `docker*.yml` files - only dropping to remember the syntax for the futur) ?
 
-* `docker build ./api -t topheman/my-docker-fullstack-project_api_production`: build the `api` and tag it as `topheman/my-docker-fullstack-project_api_production` based on [api/Dockerfile](api/Dockerfile)
-* `docker run -d -p 5000:5000 topheman/my-docker-fullstack-project_api_production`: runs the `topheman/my-docker-fullstack-project_api_production` image previously created in daemon mode and exposes the ports
-* `docker build ./front -t topheman/my-docker-fullstack-project_front_development`: build the `front` and tag it as `topheman/my-docker-fullstack-project_front_development` based on [front/Dockerfile](front/Dockerfile)
-* `docker run --rm -p 3000:3000 -v $(pwd)/front:/usr/front -v front-deps:/usr/front/node_modules topheman/my-docker-fullstack-project_front_development`:
-  * runs the `topheman/my-docker-fullstack-project_front_development` image previously created in attach mode
+* `docker build ./api -t topheman/docker-experiments_api_production`: build the `api` and tag it as `topheman/docker-experiments_api_production` based on [api/Dockerfile](api/Dockerfile)
+* `docker run -d -p 5000:5000 topheman/docker-experiments_api_production`: runs the `topheman/docker-experiments_api_production` image previously created in daemon mode and exposes the ports
+* `docker build ./front -t topheman/docker-experiments_front_development`: build the `front` and tag it as `topheman/docker-experiments_front_development` based on [front/Dockerfile](front/Dockerfile)
+* `docker run --rm -p 3000:3000 -v $(pwd)/front:/usr/front -v front-deps:/usr/front/node_modules topheman/docker-experiments_front_development`:
+  * runs the `topheman/docker-experiments_front_development` image previously created in attach mode
   * exposes the port 3000
   * creates (if not exists) and bind the volumes
   * the container will be removed once you kill the process (`--rm`)
@@ -229,7 +229,7 @@ Don't want to use `docker-compose` (everything bellow is already specified in th
 
 * `kubectl create -f ./deployments/api.yml -f ./deployments/front.yml`: creates the resources specified in the declaration files
 * `kubectl delete -f ./deployments/api.yml -f ./deployments/front.yml`: deletes resources specified in the declaration files
-* `kubectl scale --replicas=3 deployment/my-docker-fullstack-project-api-deployment`: scales up the api through 3 pods
+* `kubectl scale --replicas=3 deployment/docker-experiments-api-deployment`: scales up the api through 3 pods
 
 ## What's next?
 

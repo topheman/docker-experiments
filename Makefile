@@ -4,7 +4,7 @@ OK_COLOR     = \033[0;32m
 NO_COLOR     = \033[m
 
 DOCKER_USER = topheman
-DOCKER_IMAGE_PREFIX = $(DOCKER_USER)/my-docker-fullstack-project
+DOCKER_IMAGE_PREFIX = $(DOCKER_USER)/docker-experiments
 DOCKER_IMAGE_NAME_FRONT_DEV = $(DOCKER_IMAGE_PREFIX)_front_development
 DOCKER_IMAGE_NAME_API_DEV = $(DOCKER_IMAGE_PREFIX)_api_development
 DOCKER_IMAGE_NAME_API_PROD = $(DOCKER_IMAGE_PREFIX)_api_production
@@ -56,7 +56,7 @@ docker-images-clean: ## Clean dangling images (tagged as <none>)
 	docker rmi $(shell docker images -q --filter="dangling=true")
 
 docker-build-prod: ## Build production images
-	$(MAKE) build-front
+	$(MAKE) build-front-assets
 	docker build ./api -t $(DOCKER_IMAGE_NAME_API_PROD):$(TAG)
 	docker build . -f Dockerfile.prod -t $(DOCKER_IMAGE_NAME_NGINX):$(TAG)
 
@@ -76,10 +76,10 @@ dev-logs-api: ## Follow api logs (dev)
 	$(COMPOSE) logs -f api
 
 prod-start: ## 🐳  Start production stack (bundles frontend before)
-	$(MAKE) build-front
+	$(MAKE) build-front-assets
 	$(COMPOSEPROD) up --build
 prod-start-d: ## Start production stack (in daemon mode)
-	$(MAKE) build-front
+	$(MAKE)build-front-assets 
 	$(COMPOSEPROD) up --build -d
 prod-stop: ## Stop production stack
 	$(COMPOSEPROD) down

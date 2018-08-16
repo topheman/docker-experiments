@@ -62,8 +62,8 @@ class App extends Component {
           <img src={reactLogo} className="App-logo" alt="react logo" />
           <img src={nginxLogo} style={{marginRight: 20}} className="App-logo" alt="nginx logo" />
           <img src={gopher} style={{marginLeft: 12}} className="App-logo" alt="golang logo" />
-          <h1 className="App-title">my-docker-fullstack-project</h1>
-          <p className="App-github-link"><a href="https://github.com/topheman/my-docker-fullstack-project" title="Sources on github">sources on github</a></p>
+          <h1 className="App-title">docker-experiments</h1>
+          <p className="App-github-link"><a href="https://github.com/topheman/docker-experiments" title="Sources on github">sources on github</a></p>
         </header>
         <p>Basic infos retrieved from the dockerized golang api:</p>
         {loading && <p>Loading ...</p>}
