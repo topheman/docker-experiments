@@ -29,7 +29,7 @@ KUBECTL_CONFIG       = -f ./deployments/api.yml -f ./deployments/front.yml
 
 default: help
 
-.PHONY: build-front-assets dev-logs-api dev-logs-front dev-logs dev-ps dev-start-d dev-start dev-stop docker-build-prod docker-images-clean docker-images-id docker-images-name docker-images kube-ps kube-start-no-rebuild kube-start kube-stop prod-logs-api prod-logs-front prod-logs prod-ps prod-start-d prod-start prod-stop test-api test-front test
+.PHONY: build-front-assets dev-logs-api dev-logs-front dev-logs dev-ps dev-start-d dev-start dev-stop docker-build-prod docker-images-clean docker-images-id docker-images-name docker-images kube-ps kube-start-no-rebuild kube-start kube-stop prod-logs-api prod-logs-front prod-logs prod-ps prod-start-d-no-rebuild prod-start-d prod-start-no-rebuild prod-start prod-stop test-api test-front test
 
 # rename ?
 build-front-assets: ## Build frontend assets into ./front/build folder
@@ -81,6 +81,10 @@ prod-start: ## 🐳  Start production stack (bundles frontend before)
 prod-start-d: ## Start production stack (in daemon mode)
 	$(MAKE)build-front-assets 
 	$(COMPOSEPROD) up --build -d
+prod-start-no-rebuild: ## 🐳  Start production stack without recreating docker images
+	$(COMPOSEPROD) up
+prod-start-d-no-rebuild: ## Start production stack (in daemon mode)  without recreating docker images
+	$(COMPOSEPROD) up -d
 prod-stop: ## Stop production stack
 	$(COMPOSEPROD) down
 prod-ps: ## List production stack active containers

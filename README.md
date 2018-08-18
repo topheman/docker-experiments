@@ -44,6 +44,7 @@ Try to take a few minutes to read the doc bellow ... 😇
   * [CircleCI](#circleci)
     * [How to use latest version of docker-compose / docker-engine](#how-to-use-latest-version-of-docker-compose--docker-engine)
     * [Docker vs Machine executors](#docker-vs-machine-executors)
+  * [Why does /api fallbacks to index.html in production](#why-does-api-fallbacks-to-indexhtml-in-production)
 * [What's next?](#whats-next)
 * [Resources](#resources)
 
@@ -115,7 +116,7 @@ This will create (if not already done) and launch a whole production stack:
 
 Access [http://localhost](http://localhost) and you're good to go.
 
-🖊 `make prod-start`, `make prod-start-d`, `make prod-stop`, `make prod-ps`, `make prod-logs`, `make prod-logs-front`, `make prod-logs-api`
+🖊 `make prod-start`, `make prod-start-d`, `make prod-start-no-rebuild`, `make prod-start-d-no-rebuild`, `make prod-stop`, `make prod-ps`, `make prod-logs`, `make prod-logs-front`, `make prod-logs-api`
 
 ## Deployment - kubernetes
 
@@ -246,11 +247,12 @@ Don't want to use `docker-compose` (everything bellow is already specified in th
 I had the following error on my [first build](https://circleci.com/gh/topheman/docker-experiments/2):
 
 > ERROR: Version in "./docker-compose.yml" is unsupported. You might be seeing this error because you're using the wrong Compose file version. Either specify a supported version ("2.0", "2.1", "3.0", "3.1", "3.2") and place your service definitions under the `services` key, or omit the `version` key and place your service definitions at the root of the file to use version 1.
-For more on the Compose file format versions, see https://docs.docker.com/compose/compose-file/
+>
+> For more on the Compose file format versions, see https://docs.docker.com/compose/compose-file/
 
-The reason was because I'm using **docker-compose file format v3.4**, which doesn't seem to be supported by the version of docker-engine used on the default config of CircleCI - [see compatibility matrix](https://docs.docker.com/compose/compose-file/#compose-and-docker-compatibility-matrix).
+The reason was because I'm using **docker-compose file format v3.4**, which doesn't seem to be supported by the version of docker-engine used on the default setup of CircleCI - [see compatibility matrix](https://docs.docker.com/compose/compose-file/#compose-and-docker-compatibility-matrix).
 
-With CircleCI, in **machine executor mode**, you can change/customize the image which your VM will be using (by default: `circleci/classic:latest`) - see the [list of images](https://circleci.com/docs/2.0/configuration-reference/#machine). I simply changed the image to use:
+With CircleCI, in **machine executor mode**, you can change/customize the image your VM will be running (by default: `circleci/classic:latest`) - see the [list of images available](https://circleci.com/docs/2.0/configuration-reference/#machine). I simply changed the image to use:
 
 ```diff
 version: 2
@@ -273,6 +275,25 @@ To build/push docker images, you have two solutions on CircleCI:
 
 * Use the [machine executor mode](https://circleci.com/docs/2.0/executor-types/#using-machine): your jobs will be run in a dedicated, ephemeral Virtual Machine (VM) - so, you can directly run docker inside
 * Use the [setup_remote_docker](https://circleci.com/docs/2.0/building-docker-images/#overview) key: a remote environment will be created, and your current primary container will be configured to use it. Then, any docker-related commands you use will be safely executed in this new environment
+
+### Why does /api fallbacks to index.html in production
+
+#### Service Worker
+
+create-react-app ships with a service worker by default which implementation is based on [sw-precache-webpack-plugin](https://github.com/goldhand/sw-precache-webpack-plugin) (a Webpack plugin that generates a service worker using [sw-precache](https://github.com/GoogleChromeLabs/sw-precache) that will cache webpack's bundles' emitted assets).
+
+It means that a `service-worker.js` file will be created at build time, listing your public static assets that the service worker will cache using a [cache first](https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-falling-back-to-network) strategy (on a request for an asset, will first hit the service worker cache and serve it, then call the network and update the cache - this makes the app fast and offline-first).
+
+From the [create-react-app doc](front/README.cra.md#serving-apps-with-client-side-routing):
+
+> On a production build, and in a browser that supports [service workers](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers),
+the service worker will automatically handle all navigation requests, like for
+`/todos/42` or `/api`, by serving the cached copy of your `index.html`. This
+service worker navigation routing can be configured or disabled by
+[`ejecting`](front/README.cra.md#npm-run-eject) and then modifying the
+[`navigateFallback`](https://github.com/GoogleChrome/sw-precache#navigatefallback-string)
+and [`navigateFallbackWhitelist`](https://github.com/GoogleChrome/sw-precache#navigatefallbackwhitelist-arrayregexp)
+options of the `SWPreachePlugin` [configuration](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/config/webpack.config.prod.js).
 
 ## What's next?
 
