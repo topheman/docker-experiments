@@ -47,6 +47,7 @@ Try to take a few minutes to read the doc bellow ... 😇
   * [Why does /api fallbacks to index.html in production](#why-does-api-fallbacks-to-indexhtml-in-production)
 * [What's next?](#whats-next)
 * [Resources](#resources)
+* [Author](#author)
 
 ## Prerequisites
 
@@ -347,3 +348,7 @@ More bookmarks from my research:
   * [Kubectl apply vs kubectl create?](https://stackoverflow.com/questions/47369351/kubectl-apply-vs-kubectl-create)
   * [awesome-kubernetes - A curated list for awesome kubernetes sources](https://ramitsurana.github.io/awesome-kubernetes/)
 * [Tutoriel Linux : Makefile](https://youtu.be/2VV9FAQWHdw)
+
+## Author
+
+[Christophe Rosset](https://github.com/topheman)
