@@ -137,11 +137,11 @@ The files descripting the deployments are stored in the [deployments](deployment
 2) Build the production images:
 
 ```shell
-docker build ./api -t topheman/docker-experiments_api_production:0.1.0
-docker build . -f Dockerfile.prod -t topheman/docker-experiments_nginx:0.1.0
+docker build ./api -t topheman/docker-experiments_api_production:1.0.0
+docker build . -f Dockerfile.prod -t topheman/docker-experiments_nginx:1.0.0
 ```
 
-Note: They are tagged `0.1.0`, same version number as in the deployments files (want to put an other version number ? Don't forget to update the deployment files). For the moment, I'm not using [Helm](http://helm.readthedocs.io/en/latest/generate-and-template/) that let's you do string interpolation on yml files.
+Note: They are tagged `1.0.0`, same version number as in the deployments files (want to put an other version number ? Don't forget to update the deployment files). For the moment, I'm not using [Helm](http://helm.readthedocs.io/en/latest/generate-and-template/) that let's you do string interpolation on yml files.
 
 3) Create your pods and services
 
