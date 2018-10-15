@@ -1,4 +1,4 @@
-FROM golang:alpine as builder
+FROM golang:1.10.3-alpine as builder
 
 # Volumes and commands may be overriden in docker-compose*.yml files.
 # To build the image in production mode without docker-compose, run:
