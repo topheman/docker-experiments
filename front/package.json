@@ -9,6 +9,7 @@
     "react-scripts": "2.0.5"
   },
   "scripts": {
+    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('You must use Yarn to install, not NPM')\"",
     "docker-start": "docker-compose up -d",
     "docker-build": "docker-compose run --rm front npm run build",
     "docker-test": "npm run -s docker-test:unit",

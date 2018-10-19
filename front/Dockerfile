@@ -9,10 +9,14 @@ RUN mkdir -p front
 # Set a working directory
 WORKDIR /usr/front
 
-COPY ./package.json .
-COPY ./package-lock.json .
+# copy local yarn version
+COPY ./bin/yarn* ./bin/
+COPY ./.yarnrc .
 
-RUN npm install
+COPY ./package.json .
+COPY ./yarn.lock .
+
+RUN yarn
 
 CMD ["npm", "start"]
 
