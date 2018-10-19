@@ -29,7 +29,7 @@ KUBECTL_CONFIG       = -f ./deployments/api.yml -f ./deployments/front.yml
 
 default: help
 
-.PHONY: build-front-assets dev-logs-api dev-logs-front dev-logs dev-ps dev-start-d dev-start dev-stop docker-build-prod docker-images-clean docker-images-id docker-images-name docker-images kube-ps kube-start-no-rebuild kube-start kube-stop prod-logs-api prod-logs-front prod-logs prod-ps prod-start-d-no-rebuild prod-start-d prod-start-no-rebuild prod-start prod-stop test-api test-front test
+.PHONY: build-front-assets dev-logs-api dev-logs-front dev-logs dev-ps dev-start-d dev-start dev-stop docker-build-prod docker-images-clean docker-images-id docker-images-name docker-images docker-install-front-dependencies kube-ps kube-start-no-rebuild kube-start kube-stop prod-logs-api prod-logs-front prod-logs prod-ps prod-start-d-no-rebuild prod-start-d prod-start-no-rebuild prod-start prod-stop test-api test-front test
 
 # rename ?
 build-front-assets: ## Build frontend assets into ./front/build folder
@@ -59,6 +59,9 @@ docker-build-prod: ## Build production images
 	$(MAKE) build-front-assets
 	docker build ./api -t $(DOCKER_IMAGE_NAME_API_PROD):$(TAG)
 	docker build . -f Dockerfile.prod -t $(DOCKER_IMAGE_NAME_NGINX):$(TAG)
+
+docker-install-front-dependencies: ## Install/Re-install node_modules inside the container
+	$(COMPOSE_RUN_FRONT) yarn
 
 dev-start: ## 🐳  Start development stack
 	$(COMPOSE) up

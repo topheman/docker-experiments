@@ -10,6 +10,7 @@
   },
   "scripts": {
     "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('You must use Yarn to install, not NPM')\"",
+    "postinstall": "node ./bin/postinstall.js",
     "docker-start": "docker-compose up -d",
     "docker-build": "docker-compose run --rm front npm run build",
     "docker-test": "npm run -s docker-test:unit",
@@ -21,6 +22,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "chalk": "^2.4.1",
     "http-proxy-middleware": "^0.19.0"
   },
   "browserslist": [
