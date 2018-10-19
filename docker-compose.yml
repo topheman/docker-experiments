@@ -4,7 +4,7 @@ services:
   # no ports exposed by default, (api is proxied through docker networks)
   # in development, it's exposed on port 5000, see docker-composed.override.yml
   api:
-    image: topheman/docker-experiments_api_production
+    image: topheman/docker-experiments_api_production:2.0.0-alpha
     build:
       target: production
       context: ./api

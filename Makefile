@@ -11,7 +11,7 @@ DOCKER_IMAGE_NAME_API_PROD = $(DOCKER_IMAGE_PREFIX)_api_production
 DOCKER_IMAGE_NAME_NGINX = $(DOCKER_IMAGE_PREFIX)_nginx
 
 TAG_LATEST = latest
-TAG ?= 1.0.0
+TAG ?= 2.0.0-alpha
 
 # development docker-compose
 COMPOSE              = docker-compose
