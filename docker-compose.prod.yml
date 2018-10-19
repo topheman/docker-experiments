@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   nginx:
-    image: "topheman/docker-experiments_nginx"
+    image: "topheman/docker-experiments_nginx:1.0.1"
     build:
       context: .
       dockerfile: ./Dockerfile.prod

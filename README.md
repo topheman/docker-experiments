@@ -137,11 +137,11 @@ The files descripting the deployments are stored in the [deployments](deployment
 2) Build the production images:
 
 ```shell
-docker build ./api -t topheman/docker-experiments_api_production:1.0.0
-docker build . -f Dockerfile.prod -t topheman/docker-experiments_nginx:1.0.0
+docker build ./api -t topheman/docker-experiments_api_production:1.0.1
+docker build . -f Dockerfile.prod -t topheman/docker-experiments_nginx:1.0.1
 ```
 
-Note: They are tagged `1.0.0`, same version number as in the deployments files (want to put an other version number ? Don't forget to update the deployment files). For the moment, I'm not using [Helm](http://helm.readthedocs.io/en/latest/generate-and-template/) that let's you do string interpolation on yml files.
+Note: They are tagged `1.0.1`, same version number as in the deployments files (want to put an other version number ? Don't forget to update the deployment files). For the moment, I'm not using [Helm](http://helm.readthedocs.io/en/latest/generate-and-template/) that let's you do string interpolation on yml files.
 
 3) Create your pods and services
 
@@ -221,11 +221,11 @@ Exiting one pod won't break the app, it will fallback on the remaining replica. 
 
 Don't want to use `docker-compose` (everything bellow is already specified in the `docker*.yml` files - only dropping to remember the syntax for the futur) ?
 
-* `docker build ./api -t topheman/docker-experiments_api_production`: build the `api` and tag it as `topheman/docker-experiments_api_production` based on [api/Dockerfile](api/Dockerfile)
-* `docker run -d -p 5000:5000 topheman/docker-experiments_api_production`: runs the `topheman/docker-experiments_api_production` image previously created in daemon mode and exposes the ports
-* `docker build ./front -t topheman/docker-experiments_front_development`: build the `front` and tag it as `topheman/docker-experiments_front_development` based on [front/Dockerfile](front/Dockerfile)
-* `docker run --rm -p 3000:3000 -v $(pwd)/front:/usr/front -v front-deps:/usr/front/node_modules topheman/docker-experiments_front_development`:
-  * runs the `topheman/docker-experiments_front_development` image previously created in attach mode
+* `docker build ./api -t topheman/docker-experiments_api_production:1.0.1`: build the `api` and tag it as `topheman/docker-experiments_api_production:1.0.1` based on [api/Dockerfile](api/Dockerfile)
+* `docker run -d -p 5000:5000 topheman/docker-experiments_api_production:1.0.1`: runs the `topheman/docker-experiments_api_production:1.0.1` image previously created in daemon mode and exposes the ports
+* `docker build ./front -t topheman/docker-experiments_front_development:1.0.1`: build the `front` and tag it as `topheman/docker-experiments_front_development:1.0.1` based on [front/Dockerfile](front/Dockerfile)
+* `docker run --rm -p 3000:3000 -v $(pwd)/front:/usr/front -v front-deps:/usr/front/node_modules topheman/docker-experiments_front_development:1.0.1`:
+  * runs the `topheman/docker-experiments_front_development:1.0.1` image previously created in attach mode
   * exposes the port 3000
   * creates (if not exists) and bind the volumes
   * the container will be removed once you kill the process (`--rm`)
