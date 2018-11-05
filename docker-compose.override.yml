@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   api:
-    image: topheman/docker-experiments_api_development
+    image: topheman/docker-experiments_api_development:2.0.0-alpha
     command: sh -c "echo \"development\" && go get github.com/pilu/fresh && fresh"
     build:
       target: builder
@@ -12,7 +12,7 @@ services:
       # only expose in development (in production, the api server will be proxied via nginx)
       - "5000:5000"
   front:
-    image: topheman/docker-experiments_front_development
+    image: topheman/docker-experiments_front_development:2.0.0-alpha
     build:
       context: ./front
     ports:

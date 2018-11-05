@@ -10,7 +10,7 @@ spec:
         tier: front
     spec:
       containers:
-        - image: topheman/docker-experiments_nginx:1.0.0
+        - image: topheman/docker-experiments_nginx:2.0.0-alpha
           name: nginx
           lifecycle:
             preStop:

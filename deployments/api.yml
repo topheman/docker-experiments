@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: docker-experiments-api-container
-          image: topheman/docker-experiments_api_production:1.0.0
+          image: topheman/docker-experiments_api_production:2.0.0-alpha
           ports:
             - name: golang # Can be referred in services
               containerPort: 5000 # Not hostPort (we only expose the container inside the pod)

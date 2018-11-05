@@ -1,25 +1,31 @@
 {
   "name": "front",
-  "version": "1.0.0",
+  "version": "2.0.0-alpha",
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "cross-env": "^5.2.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "2.0.5"
   },
   "scripts": {
+    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('You must use Yarn to install, not NPM')\"",
+    "postinstall": "node ./bin/postinstall.js",
     "docker-start": "docker-compose up -d",
     "docker-build": "docker-compose run --rm front npm run build",
     "docker-test": "npm run -s docker-test:unit",
-    "docker-test:unit": "docker-compose run --rm -e CI=true front npm run -s test",
-    "docker-test:unit:watch": "docker-compose run --rm front npm run -s test",
+    "docker-test:unit": "docker-compose run --rm front npm run -s test:unit",
+    "docker-test:unit:watch": "docker-compose run --rm front npm run -s test:unit:watch",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "npm run test:unit",
+    "test:unit": "cross-env CI=true npm run test:unit:watch",
+    "test:unit:watch": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "chalk": "^2.4.1",
     "http-proxy-middleware": "^0.19.0"
   },
   "browserslist": [
