@@ -10,7 +10,7 @@ RUN mkdir -p front
 WORKDIR /usr/front
 
 # copy local yarn version
-COPY ./bin/yarn* ./bin/
+COPY ./bin/ ./bin/
 COPY ./.yarnrc .
 
 COPY ./package.json .
