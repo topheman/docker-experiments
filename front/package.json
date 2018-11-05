@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "cross-env": "^5.2.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "2.0.5"
@@ -14,11 +15,13 @@
     "docker-start": "docker-compose up -d",
     "docker-build": "docker-compose run --rm front npm run build",
     "docker-test": "npm run -s docker-test:unit",
-    "docker-test:unit": "docker-compose run --rm -e CI=true front npm run -s test",
-    "docker-test:unit:watch": "docker-compose run --rm front npm run -s test",
+    "docker-test:unit": "docker-compose run --rm front npm run -s test:unit",
+    "docker-test:unit:watch": "docker-compose run --rm front npm run -s test:unit:watch",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "npm run test:unit",
+    "test:unit": "cross-env CI=true npm run test:unit:watch",
+    "test:unit:watch": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
